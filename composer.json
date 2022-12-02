@@ -1,0 +1,32 @@
+{
+  "name": "cdigruttola/packageweight",
+  "description": "Electronic Invoice - fields",
+  "authors": [
+    {
+      "name": "cdigruttola",
+      "email": "c.digruttola@hotmail.it"
+    }
+  ],
+  "require": {
+    "php": ">=5.6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "cdigruttola\\Module\\Packageweight\\": "src/"
+    },
+    "classmap": [
+      "packageweight.php",
+      "classes/"
+    ],
+    "exclude-from-classmap": []
+  },
+  "config": {
+    "preferred-install": "dist",
+    "prepend-autoloader": false,
+    "platform": {
+      "php": "5.6"
+    }
+  },
+  "type": "prestashop-module",
+  "author": "cdigruttola"
+}
