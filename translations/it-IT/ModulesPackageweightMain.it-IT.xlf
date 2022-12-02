@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="admin528l3nsyb" source-language="it-IT" target-language="it-IT" datatype="plaintext">
+    <body>
+      <trans-unit id="4e0660485050fdbff90e7c35228fc5ef">
+        <source>Package Weight</source>
+        <target>Peso del pacco</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="e910884cc17aa40232344336ced658a5">
+        <source>This module helps you to set a package weight for each range weight you set in carrier</source>
+        <target>Questo modulo consente di impostare un peso del pacco per ogni range di pesi impostati sul corriere</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="bb8956c67b82c7444a80c6b2433dd8b4">
+        <source>Are you sure you want to uninstall this module?</source>
+        <target>Sei sicuro di voler disinstallare questo modulo?</target>
+        <note>Line: </note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
