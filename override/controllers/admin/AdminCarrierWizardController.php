@@ -143,9 +143,7 @@ class AdminCarrierWizardController extends AdminCarrierWizardControllerCore
         ], $tpl_vars);
         $helper->override_folder = 'carrier_wizard/';
         if (isset($this->package_weight_module->active) && $this->package_weight_module->active) {
-            if ($tpl_vars['package_weight_by_range']) {
-                $helper->module = $this->package_weight_module;
-            }
+            $helper->module = $this->package_weight_module;
         }
 
         return $helper->generateForm($fields_form);
