@@ -44,3 +44,4 @@ upload/
 
 **/node_modules/
 tmp
+zip-for-marketplace.sh
