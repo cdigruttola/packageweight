@@ -25,7 +25,6 @@
  */
 class Order extends OrderCore
 {
-
     public function getTotalWeight()
     {
         $total_weight = parent::getTotalWeight();
@@ -33,7 +32,7 @@ class Order extends OrderCore
         if (isset($package_weight_module->active) && $package_weight_module->active) {
             $total_weight = Carrier::addPackingWeight($this->id_carrier, $total_weight);
         }
+
         return $total_weight;
     }
-
 }

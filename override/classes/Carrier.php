@@ -30,9 +30,10 @@ class Carrier extends CarrierCore
     {
         $package_weight_module = Module::getInstanceByName('packageweight');
         if (isset($package_weight_module->active) && $package_weight_module->active) {
-            $id_carrier = (int)$this->id;
+            $id_carrier = (int) $this->id;
             $total_weight = self::addPackingWeight($id_carrier, $total_weight);
         }
+
         return parent::getDeliveryPriceByWeight($total_weight, $id_zone);
     }
 
@@ -42,6 +43,7 @@ class Carrier extends CarrierCore
         if (isset($package_weight_module->active) && $package_weight_module->active) {
             $total_weight = self::addPackingWeight($id_carrier, $total_weight);
         }
+
         return parent::checkDeliveryPriceByWeight($id_carrier, $total_weight, $id_zone);
     }
 
@@ -108,5 +110,4 @@ class Carrier extends CarrierCore
 
         return Cache::retrieve($cache_id);
     }
-
 }

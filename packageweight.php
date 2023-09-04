@@ -22,14 +22,12 @@
  * @copyright Copyright since 2007 Carmine Di Gruttola
  * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }
 
 class Packageweight extends Module
 {
-
     public function __construct()
     {
         $this->name = 'packageweight';
@@ -57,16 +55,15 @@ class Packageweight extends Module
 
     public function install()
     {
-        include(dirname(__FILE__) . '/sql/install.php');
+        include dirname(__FILE__) . '/sql/install.php';
 
         return parent::install();
     }
 
     public function uninstall()
     {
-        include(dirname(__FILE__) . '/sql/uninstall.php');
+        include dirname(__FILE__) . '/sql/uninstall.php';
 
         return parent::uninstall();
     }
-
 }
