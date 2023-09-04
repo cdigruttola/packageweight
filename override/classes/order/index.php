@@ -22,16 +22,12 @@
  * @copyright Copyright since 2007 Carmine Di Gruttola
  * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
-class Order extends OrderCore
-{
-    public function getTotalWeight()
-    {
-        $total_weight = parent::getTotalWeight();
-        $package_weight_module = Module::getInstanceByName('packageweight');
-        if (isset($package_weight_module->active) && $package_weight_module->active) {
-            $total_weight = Carrier::addPackingWeight($this->id_carrier, $total_weight);
-        }
+header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 
-        return $total_weight;
-    }
-}
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
+
+header('Location: ../');
+exit;
