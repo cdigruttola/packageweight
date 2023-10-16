@@ -22,6 +22,10 @@
  * @copyright Copyright since 2007 Carmine Di Gruttola
  * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class PackageRangeWeight extends ObjectModel
 {
     /** @var int id_range_weight */
