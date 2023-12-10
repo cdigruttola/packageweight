@@ -9,12 +9,12 @@ class ComposerStaticInitb47ca68fa6c4c184172d80824811a5c9
     public static $prefixLengthsPsr4 = array (
         'c' => 
         array (
-            'cdigruttola\\Module\\Packageweight\\' => 33,
+            'cdigruttola\\Module\\PackageWeight\\' => 33,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'cdigruttola\\Module\\Packageweight\\' => 
+        'cdigruttola\\Module\\PackageWeight\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
@@ -24,6 +24,7 @@ class ComposerStaticInitb47ca68fa6c4c184172d80824811a5c9
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'PackageRangeWeight' => __DIR__ . '/../..' . '/classes/PackageRangeWeight.php',
         'Packageweight' => __DIR__ . '/../..' . '/packageweight.php',
+        'cdigruttola\\Module\\PackageWeight\\Adapter\\Kpi\\WeightCartTotalKpi' => __DIR__ . '/../..' . '/src/Adapter/Kpi/WeightCartTotalKpi.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

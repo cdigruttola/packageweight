@@ -22,9 +22,14 @@
  * @copyright Copyright since 2007 Carmine Di Gruttola
  * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
+
+use cdigruttola\Module\PackageWeight\Adapter\Kpi\WeightCartTotalKpi;
+
 if (!defined('_PS_VERSION_')) {
     exit;
 }
+
+require_once __DIR__ . '/vendor/autoload.php';
 
 class Packageweight extends Module
 {
@@ -32,7 +37,7 @@ class Packageweight extends Module
     {
         $this->name = 'packageweight';
         $this->tab = 'shipping_logistics';
-        $this->version = '1.1.0';
+        $this->version = '1.1.1';
         $this->author = 'cdigruttola';
         $this->need_instance = 0;
 
@@ -57,7 +62,7 @@ class Packageweight extends Module
     {
         include dirname(__FILE__) . '/sql/install.php';
 
-        return parent::install();
+        return $this->registerHook("actionCartKpiRowModifier") && parent::install();
     }
 
     public function uninstall()
@@ -65,5 +70,10 @@ class Packageweight extends Module
         include dirname(__FILE__) . '/sql/uninstall.php';
 
         return parent::uninstall();
+    }
+
+    public function hookActionCartKpiRowModifier($params)
+    {
+        $params['kpis'][] = new WeightCartTotalKpi();
     }
 }

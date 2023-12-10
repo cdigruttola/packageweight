@@ -12,7 +12,7 @@
   },
   "autoload": {
     "psr-4": {
-      "cdigruttola\\Module\\Packageweight\\": "src/"
+      "cdigruttola\\Module\\PackageWeight\\": "src/"
     },
     "classmap": [
       "packageweight.php",

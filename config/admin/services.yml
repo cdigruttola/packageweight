@@ -1,0 +1,6 @@
+services:
+  _defaults:
+    public: true
+
+  cdigruttola.packageweight.adapter.kpi.weight_cart:
+    class: 'cdigruttola\Module\PackageWeight\Adapter\Kpi\WeightCartTotalKpi'

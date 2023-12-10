@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'cdigruttola\\Module\\Packageweight\\' => array($baseDir . '/src'),
+    'cdigruttola\\Module\\PackageWeight\\' => array($baseDir . '/src'),
 );
