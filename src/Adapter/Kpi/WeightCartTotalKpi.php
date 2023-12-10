@@ -49,12 +49,11 @@ final class WeightCartTotalKpi implements KpiInterface
 
         $helper = new \HelperKpi();
         $helper->id = 'box-kpi-cart';
-        $helper->icon = 'shopping_cart';
+        $helper->icon = 'scale';
         $helper->color = 'color1';
         $helper->title = $translator->trans('Total product weight', [], 'Modules.Packageweight.Main');
         $helper->subtitle = $translator->trans('Cart #%ID%', ['%ID%' => $cart->id], 'Admin.Orderscustomers.Feature');
-        $helper->value = $cart->getTotalWeight();
-        // $helper->source = Context::getContext()->link->getAdminLink('AdminStats') . '&ajax=1&action=getKpi&kpi=shopping_cart_total&cartId=' . $cart->id;
+        $helper->value = sprintf('%.3f %s', $cart->getTotalWeight(), \Configuration::get('PS_WEIGHT_UNIT'));
 
         return $helper->generate();
     }
