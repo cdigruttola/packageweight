@@ -27,7 +27,6 @@ namespace cdigruttola\Module\PackageWeight\Adapter\Kpi;
 
 use Cart;
 use Context;
-use HelperKpi;
 use PrestaShop\PrestaShop\Core\Kpi\KpiInterface;
 
 /**
@@ -40,23 +39,22 @@ final class WeightCartTotalKpi implements KpiInterface
      */
     private $options;
 
-
     /**
      * {@inheritdoc}
      */
     public function render()
     {
-        $translator = Context::getContext()->getTranslator();
-        $cart = new Cart($this->options['cart_id']);
+        $translator = \Context::getContext()->getTranslator();
+        $cart = new \Cart($this->options['cart_id']);
 
-        $helper = new HelperKpi();
+        $helper = new \HelperKpi();
         $helper->id = 'box-kpi-cart';
         $helper->icon = 'shopping_cart';
         $helper->color = 'color1';
         $helper->title = $translator->trans('Total product weight', [], 'Modules.Packageweight.Main');
         $helper->subtitle = $translator->trans('Cart #%ID%', ['%ID%' => $cart->id], 'Admin.Orderscustomers.Feature');
         $helper->value = $cart->getTotalWeight();
-        //$helper->source = Context::getContext()->link->getAdminLink('AdminStats') . '&ajax=1&action=getKpi&kpi=shopping_cart_total&cartId=' . $cart->id;
+        // $helper->source = Context::getContext()->link->getAdminLink('AdminStats') . '&ajax=1&action=getKpi&kpi=shopping_cart_total&cartId=' . $cart->id;
 
         return $helper->generate();
     }

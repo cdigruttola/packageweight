@@ -33,5 +33,5 @@ if (!defined('_PS_VERSION_')) {
  */
 function upgrade_module_1_1_1($module)
 {
-    return $module->registerHook("actionCartKpiRowModifier");
+    return $module->registerHook('actionCartKpiRowModifier');
 }

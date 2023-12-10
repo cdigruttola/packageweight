@@ -62,7 +62,7 @@ class Packageweight extends Module
     {
         include dirname(__FILE__) . '/sql/install.php';
 
-        return $this->registerHook("actionCartKpiRowModifier") && parent::install();
+        return $this->registerHook('actionCartKpiRowModifier') && parent::install();
     }
 
     public function uninstall()
