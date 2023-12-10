@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file original="admin528l3nsyb" source-language="it-IT" target-language="it-IT" datatype="plaintext">
+  <file original="admin-dev" source-language="it-IT" target-language="it-IT" datatype="plaintext">
     <body>
       <trans-unit id="4e0660485050fdbff90e7c35228fc5ef">
         <source>Package Weight</source>
@@ -15,6 +15,11 @@
       <trans-unit id="bb8956c67b82c7444a80c6b2433dd8b4">
         <source>Are you sure you want to uninstall this module?</source>
         <target>Sei sicuro di voler disinstallare questo modulo?</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="649c3ba4bf573dc824ab20a416919ad3">
+        <source>Total product weight</source>
+        <target>Peso totale dei prodotti</target>
         <note>Line: </note>
       </trans-unit>
     </body>
