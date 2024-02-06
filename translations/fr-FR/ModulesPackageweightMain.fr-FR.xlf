@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="admin-dev" source-language="fr-FR" target-language="fr-FR" datatype="plaintext">
+    <body>
+      <trans-unit id="4e0660485050fdbff90e7c35228fc5ef">
+        <source>Package Weight</source>
+        <target>Poids du paquet</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="e910884cc17aa40232344336ced658a5">
+        <source>This module helps you to set a package weight for each range weight you set in carrier</source>
+        <target>Ce module permet d'ajouter le poids du paquet pour chaque tranche de poids d'un transporteur</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="bb8956c67b82c7444a80c6b2433dd8b4">
+        <source>Are you sure you want to uninstall this module?</source>
+        <target>Êtes-vous sûr de vouloir désinstaller le module ?</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="649c3ba4bf573dc824ab20a416919ad3">
+        <source>Total product weight</source>
+        <target>Poids total des produits</target>
+        <note>Line: </note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
