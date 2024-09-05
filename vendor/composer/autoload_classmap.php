@@ -9,5 +9,6 @@ return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'PackageRangeWeight' => $baseDir . '/classes/PackageRangeWeight.php',
     'Packageweight' => $baseDir . '/packageweight.php',
+    'cdigruttola\\Module\\PackageWeight\\Adapter\\Kpi\\PackageWeightCartTotalKpi' => $baseDir . '/src/Adapter/Kpi/PackageWeightCartTotalKpi.php',
     'cdigruttola\\Module\\PackageWeight\\Adapter\\Kpi\\WeightCartTotalKpi' => $baseDir . '/src/Adapter/Kpi/WeightCartTotalKpi.php',
 );

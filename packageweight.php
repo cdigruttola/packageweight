@@ -23,6 +23,7 @@
  * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 
+use cdigruttola\Module\PackageWeight\Adapter\Kpi\PackageWeightCartTotalKpi;
 use cdigruttola\Module\PackageWeight\Adapter\Kpi\WeightCartTotalKpi;
 
 if (!defined('_PS_VERSION_')) {
@@ -75,5 +76,6 @@ class Packageweight extends Module
     public function hookActionCartKpiRowModifier($params)
     {
         $params['kpis'][] = new WeightCartTotalKpi();
+        $params['kpis'][] = new PackageWeightCartTotalKpi();
     }
 }

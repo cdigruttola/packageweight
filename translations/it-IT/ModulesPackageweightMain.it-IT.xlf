@@ -17,6 +17,11 @@
         <target>Sei sicuro di voler disinstallare questo modulo?</target>
         <note>Line: </note>
       </trans-unit>
+      <trans-unit id="283a8fc4b999a683f5aa01a80f8658ef">
+        <source>Total cart weight (package incl.)</source>
+        <target>Peso totale del carrello (incluso pacco)</target>
+        <note>Line: </note>
+      </trans-unit>
       <trans-unit id="649c3ba4bf573dc824ab20a416919ad3">
         <source>Total product weight</source>
         <target>Peso totale dei prodotti</target>

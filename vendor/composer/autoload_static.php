@@ -24,6 +24,7 @@ class ComposerStaticInitb47ca68fa6c4c184172d80824811a5c9
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'PackageRangeWeight' => __DIR__ . '/../..' . '/classes/PackageRangeWeight.php',
         'Packageweight' => __DIR__ . '/../..' . '/packageweight.php',
+        'cdigruttola\\Module\\PackageWeight\\Adapter\\Kpi\\PackageWeightCartTotalKpi' => __DIR__ . '/../..' . '/src/Adapter/Kpi/PackageWeightCartTotalKpi.php',
         'cdigruttola\\Module\\PackageWeight\\Adapter\\Kpi\\WeightCartTotalKpi' => __DIR__ . '/../..' . '/src/Adapter/Kpi/WeightCartTotalKpi.php',
     );
 
