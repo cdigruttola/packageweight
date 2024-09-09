@@ -23,52 +23,45 @@
  * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 
-namespace cdigruttola\Module\PackageWeight\Adapter\Kpi;
+declare(strict_types=1);
+
+namespace cdigruttola\Module\PackageWeight\Form\Provider;
 
 if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-use Cart;
-use Context;
-use PrestaShop\PrestaShop\Core\Kpi\KpiInterface;
+use PrestaShop\PrestaShop\Core\Configuration\DataConfigurationInterface;
+use PrestaShop\PrestaShop\Core\Form\FormDataProviderInterface;
 
-/**
- * {@inheritdoc}
- */
-final class WeightCartTotalKpi implements KpiInterface
+class PackageWeightConfigurationFormDataProvider implements FormDataProviderInterface
 {
     /**
-     * @var array
+     * @var DataConfigurationInterface
      */
-    private $options;
+    private $dataConfiguration;
+
+    /**
+     * @param DataConfigurationInterface $dataConfiguration
+     */
+    public function __construct(DataConfigurationInterface $dataConfiguration)
+    {
+        $this->dataConfiguration = $dataConfiguration;
+    }
 
     /**
      * {@inheritdoc}
      */
-    public function render()
+    public function getData(): array
     {
-        $translator = \Context::getContext()->getTranslator();
-        $cart = new \Cart($this->options['cart_id']);
-
-        $helper = new \HelperKpi();
-        $helper->id = 'box-kpi-cart';
-        $helper->icon = 'scale';
-        $helper->color = 'color1';
-        $helper->title = $translator->trans('Total product weight', [], 'Modules.Packageweight.Main');
-        $helper->subtitle = $translator->trans('Cart #%ID%', ['%ID%' => $cart->id], 'Admin.Orderscustomers.Feature');
-        $helper->value = sprintf('%.3f %s', $cart->getTotalWeight(), \Configuration::get('PS_WEIGHT_UNIT'));
-
-        return $helper->generate();
+        return $this->dataConfiguration->getConfiguration();
     }
 
     /**
-     * Sets options for Kpi
-     *
-     * @param array $options
+     * {@inheritdoc}
      */
-    public function setOptions(array $options)
+    public function setData(array $data): array
     {
-        $this->options = $options;
+        return $this->dataConfiguration->updateConfiguration($data);
     }
 }

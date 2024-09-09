@@ -1,6 +1,48 @@
+imports:
+  - { resource: ../common.yml }
+
 services:
   _defaults:
     public: true
 
+  # Controller
+  cdigruttola\Module\PackageWeight\Controller\PackageWeightController:
+    public: true
+    class: cdigruttola\Module\PackageWeight\Controller\PackageWeightController
+    arguments:
+      - "@=service('prestashop.adapter.legacy.context').getLanguages(false)"
+
   cdigruttola.packageweight.adapter.kpi.weight_cart:
     class: 'cdigruttola\Module\PackageWeight\Adapter\Kpi\WeightCartTotalKpi'
+
+  cdigruttola.packageweight.adapter.kpi.package_weight_cart:
+    class: 'cdigruttola\Module\PackageWeight\Adapter\Kpi\PackageWeightCartTotalKpi'
+
+  cdigruttola.packageweight.form.configuration_type.form_handler:
+    class: 'PrestaShop\PrestaShop\Core\Form\Handler'
+    arguments:
+      - '@form.factory'
+      - '@prestashop.core.hook.dispatcher'
+      - '@cdigruttola.packageweight.configuration.form_provider'
+      - 'cdigruttola\Module\PackageWeight\Form\PackageWeightConfigurationType'
+      - 'PackageWeightConfigurationForm'
+
+  cdigruttola.packageweight.configuration.form_provider:
+    class: cdigruttola\Module\PackageWeight\Form\Provider\PackageWeightConfigurationFormDataProvider
+    arguments:
+      - '@cdigruttola.packageweight.configuration'
+
+  cdigruttola.packageweight.configuration:
+    class: cdigruttola\Module\PackageWeight\Form\DataConfiguration\PackageWeightConfigurationData
+    arguments:
+      - '@prestashop.adapter.legacy.configuration'
+      - '@cdigruttola.packageweight.module'
+
+  cdigruttola.packageweight.form.configuration_type:
+    class: cdigruttola\Module\PackageWeight\Form\PackageWeightConfigurationType
+    parent: 'form.type.translatable.aware'
+    arguments:
+      - '@=service("prestashop.core.form.choice_provider.group_by_id").getChoices()'
+    public: true
+    tags:
+      - { name: form.type }

@@ -17,6 +17,11 @@
         <target>Sei sicuro di voler disinstallare questo modulo?</target>
         <note>Line: </note>
       </trans-unit>
+      <trans-unit id="379caaf76ceefcc0ce4659da200e229d">
+        <source>Choose the user group(s) who can view the cart weight</source>
+        <target>Scegli il gruppo o i gruppi di utenti che possono visualizzare il peso del carrello</target>
+        <note>Line: </note>
+      </trans-unit>
       <trans-unit id="283a8fc4b999a683f5aa01a80f8658ef">
         <source>Total cart weight (package incl.)</source>
         <target>Peso totale del carrello (incluso pacco)</target>

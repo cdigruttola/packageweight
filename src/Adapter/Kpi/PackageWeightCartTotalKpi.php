@@ -25,6 +25,10 @@
 
 namespace cdigruttola\Module\PackageWeight\Adapter\Kpi;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Carrier;
 use Cart;
 use Context;

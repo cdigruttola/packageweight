@@ -25,6 +25,7 @@
 
 use cdigruttola\Module\PackageWeight\Adapter\Kpi\PackageWeightCartTotalKpi;
 use cdigruttola\Module\PackageWeight\Adapter\Kpi\WeightCartTotalKpi;
+use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -73,6 +74,12 @@ class Packageweight extends Module
         include dirname(__FILE__) . '/sql/uninstall.php';
 
         return parent::uninstall();
+    }
+
+    public function getContent()
+    {
+        Tools::redirectAdmin(SymfonyContainer::getInstance()->get('router')->generate('package_weight_controller'));
+
     }
 
     public function hookActionCartKpiRowModifier($params)

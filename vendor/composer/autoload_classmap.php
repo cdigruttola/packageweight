@@ -11,4 +11,8 @@ return array(
     'Packageweight' => $baseDir . '/packageweight.php',
     'cdigruttola\\Module\\PackageWeight\\Adapter\\Kpi\\PackageWeightCartTotalKpi' => $baseDir . '/src/Adapter/Kpi/PackageWeightCartTotalKpi.php',
     'cdigruttola\\Module\\PackageWeight\\Adapter\\Kpi\\WeightCartTotalKpi' => $baseDir . '/src/Adapter/Kpi/WeightCartTotalKpi.php',
+    'cdigruttola\\Module\\PackageWeight\\Controller\\PackageWeightController' => $baseDir . '/src/Controller/PackageWeightController.php',
+    'cdigruttola\\Module\\PackageWeight\\Form\\DataConfiguration\\PackageWeightConfigurationData' => $baseDir . '/src/Form/DataConfiguration/PackageWeightConfigurationData.php',
+    'cdigruttola\\Module\\PackageWeight\\Form\\PackageWeightConfigurationType' => $baseDir . '/src/Form/PackageWeightConfigurationType.php',
+    'cdigruttola\\Module\\PackageWeight\\Form\\Provider\\PackageWeightConfigurationFormDataProvider' => $baseDir . '/src/Form/Provider/PackageWeightConfigurationFormDataProvider.php',
 );

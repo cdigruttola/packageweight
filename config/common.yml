@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    public: true
+
+  cdigruttola.packageweight.module:
+    class: Packageweight
+    factory: [ 'Module', 'getInstanceByName' ]
+    public: false
+    arguments:
+      - 'packageweight'

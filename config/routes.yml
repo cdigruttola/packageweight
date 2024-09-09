@@ -1,0 +1,11 @@
+package_weight_controller:
+  path: /package-weight/configuration
+  methods: [GET]
+  defaults:
+    _controller: 'cdigruttola\Module\PackageWeight\Controller\PackageWeightController::index'
+
+package_weight_controller_configuration_save:
+  path: /package-weight/configuration
+  methods: [POST, PATCH]
+  defaults:
+    _controller: 'cdigruttola\Module\PackageWeight\Controller\PackageWeightController::saveConfiguration'
