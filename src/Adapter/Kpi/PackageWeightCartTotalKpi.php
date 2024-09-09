@@ -29,9 +29,6 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-use Carrier;
-use Cart;
-use Context;
 use PrestaShop\PrestaShop\Core\Kpi\KpiInterface;
 
 /**
@@ -59,7 +56,7 @@ final class PackageWeightCartTotalKpi implements KpiInterface
         $helper->title = $translator->trans('Total cart weight (package incl.)', [], 'Modules.Packageweight.Main');
         $helper->subtitle = $translator->trans('Cart #%ID%', ['%ID%' => $cart->id], 'Admin.Orderscustomers.Feature');
 
-        $total_weight = Carrier::addPackingWeight($cart->id_carrier, $cart->getTotalWeight());
+        $total_weight = \Carrier::addPackingWeight($cart->id_carrier, $cart->getTotalWeight());
 
         $helper->value = sprintf('%.3f %s', $total_weight, \Configuration::get('PS_WEIGHT_UNIT'));
 

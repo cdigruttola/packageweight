@@ -33,9 +33,9 @@ if (!defined('_PS_VERSION_')) {
 
 use PrestaShopBundle\Form\Admin\Type\Material\MaterialChoiceTableType;
 use PrestaShopBundle\Form\Admin\Type\TranslatorAwareType;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PackageWeightConfigurationType extends TranslatorAwareType
 {
@@ -52,7 +52,7 @@ class PackageWeightConfigurationType extends TranslatorAwareType
     public function __construct(
         TranslatorInterface $translator,
         array $locales,
-        array $customerGroupChoices
+        array $customerGroupChoices,
     ) {
         parent::__construct($translator, $locales);
 

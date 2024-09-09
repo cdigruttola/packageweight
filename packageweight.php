@@ -64,9 +64,9 @@ class Packageweight extends Module
     {
         include dirname(__FILE__) . '/sql/install.php';
 
-        return $this->registerHook('actionCartKpiRowModifier') &&
-            $this->registerHook('displayAfterCarrier') &&
-            parent::install();
+        return $this->registerHook('actionCartKpiRowModifier')
+            && $this->registerHook('displayAfterCarrier')
+            && parent::install();
     }
 
     public function uninstall()
@@ -79,7 +79,6 @@ class Packageweight extends Module
     public function getContent()
     {
         Tools::redirectAdmin(SymfonyContainer::getInstance()->get('router')->generate('package_weight_controller'));
-
     }
 
     public function hookActionCartKpiRowModifier($params)
@@ -92,6 +91,7 @@ class Packageweight extends Module
      * Inject some fixed metadata in the template used by all service point-based carriers.
      *
      * @param array $params
+     *
      * @return false|string
      */
     public function hookDisplayAfterCarrier(array $params)
@@ -103,15 +103,14 @@ class Packageweight extends Module
 
         $idCarrier = $cart->id_carrier;
         if (!$idCarrier) {
-            $idCarrier = preg_replace("/[^0-9]/", '', current($cart->getDeliveryOption(null, false, false)));
+            $idCarrier = preg_replace('/[^0-9]/', '', current($cart->getDeliveryOption(null, false, false)));
         }
 
         $total_weight = Carrier::addPackingWeight($idCarrier, $cart->getTotalWeight());
         $this->smarty->assign([
-            'weight' => sprintf('%.3f %s', $total_weight, \Configuration::get('PS_WEIGHT_UNIT')),
+            'weight' => sprintf('%.3f %s', $total_weight, Configuration::get('PS_WEIGHT_UNIT')),
         ]);
 
         return $this->display(__FILE__, 'views/templates/hook/display-after-carrier.tpl');
     }
-
 }
