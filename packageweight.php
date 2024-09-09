@@ -98,11 +98,11 @@ class Packageweight extends Module
     public function hookDisplayAfterCarrier(array $params)
     {
         $cart = $params['cart'] ?? null;
-        if ($cart === null || !$cart->id_address_delivery || ! $cart->id_customer) {
+        if ($cart === null || !$cart->id_address_delivery || !$cart->id_customer) {
             return '';
         }
 
-        $id_group = \Customer::getDefaultGroupId((int) $cart->id_customer);
+        $id_group = Customer::getDefaultGroupId((int) $cart->id_customer);
         $group_ids = json_decode(Configuration::get(PackageWeightConfigurationData::PACKAGE_WEIGHT_GROUPS) ?? '', true);
 
         if (!in_array($id_group, $group_ids)) {
