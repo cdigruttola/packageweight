@@ -25,6 +25,7 @@
 
 use cdigruttola\Module\PackageWeight\Adapter\Kpi\PackageWeightCartTotalKpi;
 use cdigruttola\Module\PackageWeight\Adapter\Kpi\WeightCartTotalKpi;
+use cdigruttola\Module\PackageWeight\Form\DataConfiguration\PackageWeightConfigurationData;
 use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
 
 if (!defined('_PS_VERSION_')) {
@@ -97,7 +98,14 @@ class Packageweight extends Module
     public function hookDisplayAfterCarrier(array $params)
     {
         $cart = $params['cart'] ?? null;
-        if ($cart === null || !$cart->id_address_delivery) {
+        if ($cart === null || !$cart->id_address_delivery || ! $cart->id_customer) {
+            return '';
+        }
+
+        $id_group = \Customer::getDefaultGroupId((int) $cart->id_customer);
+        $group_ids = json_decode(Configuration::get(PackageWeightConfigurationData::PACKAGE_WEIGHT_GROUPS) ?? '', true);
+
+        if (!in_array($id_group, $group_ids)) {
             return '';
         }
 
