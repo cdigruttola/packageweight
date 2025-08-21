@@ -84,8 +84,8 @@ class Packageweight extends Module
 
     public function hookActionCartKpiRowModifier($params)
     {
-        $params['kpis'][] = new WeightCartTotalKpi();
-        $params['kpis'][] = new PackageWeightCartTotalKpi();
+        $params['kpis'][] = new WeightCartTotalKpi($this);
+        $params['kpis'][] = new PackageWeightCartTotalKpi($this);
     }
 
     /**

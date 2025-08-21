@@ -40,21 +40,30 @@ final class WeightCartTotalKpi implements KpiInterface
      * @var array
      */
     private $options;
+    /** @var \Packageweight */
+    private $module;
+
+    /**
+     * @param \Packageweight $module
+     */
+    public function __construct(\Packageweight $module)
+    {
+        $this->module = $module;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function render()
     {
-        $translator = \Context::getContext()->getTranslator();
         $cart = new \Cart($this->options['cart_id']);
 
         $helper = new \HelperKpi();
         $helper->id = 'box-kpi-cart';
         $helper->icon = 'scale';
         $helper->color = 'color1';
-        $helper->title = $translator->trans('Total product weight', [], 'Modules.Packageweight.Main');
-        $helper->subtitle = $translator->trans('Cart #%ID%', ['%ID%' => $cart->id], 'Admin.Orderscustomers.Feature');
+        $helper->title = $this->module->getTranslator()->trans('Total product weight', [], 'Modules.Packageweight.Main');
+        $helper->subtitle = $this->module->getTranslator()->trans('Cart #%ID%', ['%ID%' => $cart->id], 'Admin.Orderscustomers.Feature');
         $helper->value = sprintf('%.3f %s', $cart->getTotalWeight(), \Configuration::get('PS_WEIGHT_UNIT'));
 
         return $helper->generate();
