@@ -31,9 +31,7 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-use cdigruttola\Module\VariableShipping\Entity\CartVariableShipping;
 use PrestaShop\PrestaShop\Core\Form\Handler;
-use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use PrestaShopBundle\Controller\Admin\PrestaShopAdminController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,7 +39,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PackageWeightController extends PrestaShopAdminController
 {
-
     public function index(
         #[Autowire(service: 'cdigruttola.packageweight.form.configuration_type.form_handler')]
         Handler $configurationFormHandler,
@@ -56,8 +53,9 @@ class PackageWeightController extends PrestaShopAdminController
 
     /**
      * @param Request $request
-     *
+     * @param Handler $configurationFormHandler
      * @return Response
+     * @throws \Exception
      */
     public function saveConfiguration(
         Request $request,
@@ -94,5 +92,4 @@ class PackageWeightController extends PrestaShopAdminController
 
         return $redirectResponse;
     }
-
 }
