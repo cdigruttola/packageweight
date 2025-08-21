@@ -32,7 +32,7 @@ class Order extends OrderCore
     {
         $total_weight = parent::getTotalWeight();
         $package_weight_module = Module::getInstanceByName('packageweight');
-        if (isset($package_weight_module->active) && $package_weight_module->active) {
+        if ($package_weight_module && $package_weight_module->active) {
             $total_weight = Carrier::addPackingWeight($this->id_carrier, $total_weight);
         }
 

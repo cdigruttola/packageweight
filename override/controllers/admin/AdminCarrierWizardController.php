@@ -38,7 +38,7 @@ class AdminCarrierWizardController extends AdminCarrierWizardControllerCore
 
     public function processRanges($id_carrier)
     {
-        if (isset($this->package_weight_module->active) && $this->package_weight_module->active) {
+        if ($this->package_weight_module && $this->package_weight_module->active) {
             if (!$this->access('edit') || !$this->access('add')) {
                 $this->errors[] = $this->trans('You do not have permission to use this wizard.', [], 'Admin.Shipping.Notification');
 

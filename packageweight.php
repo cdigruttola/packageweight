@@ -40,7 +40,7 @@ class Packageweight extends Module
     {
         $this->name = 'packageweight';
         $this->tab = 'shipping_logistics';
-        $this->version = '1.1.1';
+        $this->version = '2.0.0';
         $this->author = 'cdigruttola';
         $this->need_instance = 0;
 
@@ -53,7 +53,7 @@ class Packageweight extends Module
 
         $this->confirmUninstall = $this->trans('Are you sure you want to uninstall this module?', [], 'Modules.Packageweight.Main');
 
-        $this->ps_versions_compliancy = ['min' => '1.6', 'max' => _PS_VERSION_];
+        $this->ps_versions_compliancy = ['min' => '9.0.0', 'max' => _PS_VERSION_];
     }
 
     public function isUsingNewTranslationSystem()

@@ -32,26 +32,21 @@ if (!defined('_PS_VERSION_')) {
 }
 
 use cdigruttola\Module\VariableShipping\Entity\CartVariableShipping;
+use PrestaShop\PrestaShop\Core\Form\Handler;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
+use PrestaShopBundle\Controller\Admin\PrestaShopAdminController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class PackageWeightController extends FrameworkBundleAdminController
+class PackageWeightController extends PrestaShopAdminController
 {
-    /**
-     * @var array
-     */
-    private $languages;
 
-    public function __construct($languages)
-    {
-        parent::__construct();
-        $this->languages = $languages;
-    }
-
-    public function index(): Response
-    {
-        $configurationForm = $this->get('cdigruttola.packageweight.form.configuration_type.form_handler')->getForm();
+    public function index(
+        #[Autowire(service: 'cdigruttola.packageweight.form.configuration_type.form_handler')]
+        Handler $configurationFormHandler,
+    ): Response {
+        $configurationForm = $configurationFormHandler->getForm();
 
         return $this->render('@Modules/packageweight/views/templates/admin/index.html.twig', [
             'form' => $configurationForm->createView(),
@@ -64,11 +59,14 @@ class PackageWeightController extends FrameworkBundleAdminController
      *
      * @return Response
      */
-    public function saveConfiguration(Request $request): Response
-    {
+    public function saveConfiguration(
+        Request $request,
+        #[Autowire(service: 'cdigruttola.packageweight.form.configuration_type.form_handler')]
+        Handler $configurationFormHandler,
+    ): Response {
         $redirectResponse = $this->redirectToRoute('package_weight_controller');
 
-        $form = $this->get('cdigruttola.packageweight.form.configuration_type.form_handler')->getForm();
+        $form = $configurationFormHandler->getForm();
         $form->handleRequest($request);
 
         if (!$form->isSubmitted()) {
@@ -77,10 +75,10 @@ class PackageWeightController extends FrameworkBundleAdminController
 
         if ($form->isValid()) {
             $data = $form->getData();
-            $saveErrors = $this->get('cdigruttola.packageweight.form.configuration_type.form_handler')->save($data);
+            $saveErrors = $configurationFormHandler->save($data);
 
             if (0 === count($saveErrors)) {
-                $this->addFlash('success', $this->trans('Successful update.', 'Admin.Notifications.Success'));
+                $this->addFlash('success', $this->trans('Successful update.', [], 'Admin.Notifications.Success'));
 
                 return $redirectResponse;
             }
@@ -92,33 +90,9 @@ class PackageWeightController extends FrameworkBundleAdminController
             $formErrors[] = $error->getMessage();
         }
 
-        $this->flashErrors($formErrors);
+        $this->addFlashErrors($formErrors);
 
         return $redirectResponse;
     }
 
-    public function customPrice(Request $request)
-    {
-        $cartId = (int) \Tools::getValue('cartId');
-        $custom_price = (float) \Tools::getValue('custom_price');
-
-        $entityManager = $this->get('doctrine.orm.entity_manager');
-
-        /** @var CartVariableShipping $entity */
-        $entity = $this->getDoctrine()
-            ->getRepository(CartVariableShipping::class)
-            ->find($cartId);
-
-        if (!empty($entity)) {
-            $entity->setCustomPrice($custom_price);
-        } else {
-            $entity = new CartVariableShipping();
-            $entity->setCustomPrice($custom_price);
-            $entity->setIdCart($cartId);
-        }
-        $entityManager->persist($entity);
-        $entityManager->flush();
-
-        return $this->json(['message' => $this->trans('Successful update.', 'Admin.Notifications.Success')], Response::HTTP_OK);
-    }
 }
