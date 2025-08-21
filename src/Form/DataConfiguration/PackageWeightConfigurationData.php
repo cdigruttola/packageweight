@@ -45,16 +45,13 @@ final class PackageWeightConfigurationData implements DataConfigurationInterface
 
     /** @var ConfigurationInterface */
     private $configuration;
-    /** @var \Packageweight */
-    private $module;
 
     /**
      * @param ConfigurationInterface $configuration
      */
-    public function __construct(ConfigurationInterface $configuration, \Packageweight $module)
+    public function __construct(ConfigurationInterface $configuration)
     {
         $this->configuration = $configuration;
-        $this->module = $module;
     }
 
     /**

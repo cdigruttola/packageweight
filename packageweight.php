@@ -103,7 +103,7 @@ class Packageweight extends Module
         }
 
         $id_group = Customer::getDefaultGroupId((int) $cart->id_customer);
-        $group_ids = json_decode(Configuration::get(PackageWeightConfigurationData::PACKAGE_WEIGHT_GROUPS) ?? '', true);
+        $group_ids = json_decode(Configuration::get(PackageWeightConfigurationData::PACKAGE_WEIGHT_GROUPS), true) ?: [];
 
         if (!in_array($id_group, $group_ids)) {
             return '';

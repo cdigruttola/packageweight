@@ -36,7 +36,6 @@ services:
     class: cdigruttola\Module\PackageWeight\Form\DataConfiguration\PackageWeightConfigurationData
     arguments:
       - '@prestashop.adapter.legacy.configuration'
-      - '@cdigruttola.packageweight.module'
 
   cdigruttola.packageweight.form.configuration_type:
     class: cdigruttola\Module\PackageWeight\Form\PackageWeightConfigurationType
