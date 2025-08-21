@@ -8,3 +8,10 @@ services:
     public: false
     arguments:
       - 'packageweight'
+
+  cdigruttola.module.packageweight.repository.package_weight:
+    class: cdigruttola\Module\PackageWeight\Repository\PackageRangeWeightRepository
+    public: true
+    factory: ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments:
+      - cdigruttola\Module\PackageWeight\Entity\PackageRangeWeight
