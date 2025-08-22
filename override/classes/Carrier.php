@@ -66,8 +66,8 @@ class Carrier extends CarrierCore
         if (!isset(self::$package_weight_by_weight[$cache_key])) {
             $sql = 'SELECT pw.`package_weight`
                     FROM `' . _DB_PREFIX_ . 'delivery` d
-                    LEFT JOIN `' . _DB_PREFIX_ . 'range_weight` w ON (d.`id_range_weight` = w.`id_range_weight`)
-                    LEFT JOIN `' . _DB_PREFIX_ . 'package_range_weight` pw ON (pw.`id_range_weight` = w.`id_range_weight`)
+                    LEFT JOIN `' . _DB_PREFIX_ . 'range_weight` w ON d.`id_range_weight` = w.`id_range_weight`
+                    LEFT JOIN `' . _DB_PREFIX_ . 'package_range_weight` pw ON pw.`id_delivery` = w.`id_delivery`
                     WHERE ' . $total_weight . ' >= w.`delimiter1`
                         AND ' . $total_weight . ' < w.`delimiter2`
                         AND d.`id_carrier` = ' . $id_carrier . '
@@ -102,7 +102,7 @@ class Carrier extends CarrierCore
             $sql = 'SELECT pw.`package_weight`
                     FROM `' . _DB_PREFIX_ . 'delivery` d
                     INNER JOIN `' . _DB_PREFIX_ . 'range_weight` w ON d.`id_range_weight` = w.`id_range_weight`
-                    LEFT JOIN `' . _DB_PREFIX_ . 'package_range_weight` pw ON (pw.`id_range_weight` = w.`id_range_weight`)
+                    LEFT JOIN `' . _DB_PREFIX_ . 'package_range_weight` pw ON (pw.`id_delivery` = w.`id_delivery`)
                     WHERE d.`id_carrier` = ' . $id_carrier . '
                         ' . Carrier::sqlDeliveryRangeShop('range_weight') . '
                     ORDER BY w.`delimiter2` DESC';

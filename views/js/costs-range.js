@@ -1,4 +1,3 @@
-<?php
 /**
  * Copyright since 2007 Carmine Di Gruttola
  *
@@ -21,13 +20,14 @@
  *  @author    cdigruttola <c.digruttola@hotmail.it>
  *  @copyright Copyright since 2007 Carmine Di Gruttola
  *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ *
  */
-header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+const {$} = window;
 
-header('Cache-Control: no-store, no-cache, must-revalidate');
-header('Cache-Control: post-check=0, pre-check=0', false);
-header('Pragma: no-cache');
-
-header('Location: ../');
-exit;
+$(() => {
+    prestashop.component.EventEmitter.on('carrierShippingMethodChange', (response) => {
+        if (response !== weight_unit) {
+            console.log(response);
+        }
+    });
+});

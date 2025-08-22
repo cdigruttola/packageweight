@@ -30,6 +30,7 @@ namespace cdigruttola\Module\PackageWeight\Form\Type;
 use PrestaShopBundle\Form\Admin\Improve\Shipping\Carrier\Type\CostsZoneType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -51,4 +52,16 @@ class PackageWeightCostsZoneType extends CostsZoneType
             'block_prefix' => 'carrier_ranges_costs_zone_ranges_collection',
         ]);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'label' => false,
+            'form_theme' => '@Modules/packageweight/views/templates/admin/costs-range.html.twig',
+        ]);
+    }
+
 }
