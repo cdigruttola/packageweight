@@ -27,11 +27,17 @@ use cdigruttola\Module\PackageWeight\Adapter\Kpi\PackageWeightCartTotalKpi;
 use cdigruttola\Module\PackageWeight\Adapter\Kpi\WeightCartTotalKpi;
 use cdigruttola\Module\PackageWeight\Entity\PackageRangeWeight;
 use cdigruttola\Module\PackageWeight\Form\DataConfiguration\PackageWeightConfigurationData;
+use cdigruttola\Module\PackageWeight\Form\Type\PackageWeightCostsRangeType;
+use cdigruttola\Module\PackageWeight\Form\Type\PackageWeightCostsZoneType;
 use cdigruttola\Module\PackageWeight\Repository\PackageRangeWeightRepository;
 use Doctrine\DBAL\Connection;
 use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
+use PrestaShopBundle\Form\Admin\Improve\Shipping\Carrier\Type\CostsZoneType;
 use Psr\Log\LogLevel;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormBuilderInterface;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -136,28 +142,20 @@ class Packageweight extends Module
             return;
         }
 
-        if ($params['data']['shipping_settings']['shipping_method'] !== Carrier::SHIPPING_METHOD_WEIGHT) {
+        if ($params['data']['shipping_settings']['shipping_method'] !== \Carrier::SHIPPING_METHOD_WEIGHT) {
             return;
         }
 
-        // ranges_costs è una CollectionType di CostsZoneType
-        $zonesCollection = $params['form_builder']->get('shipping_settings')->get('ranges_costs');
+        $formBuilder = $params['form_builder'];
+        $shippingSettings = $formBuilder->get('shipping_settings');
 
-        foreach ($zonesCollection as $zoneForm) {
-            // dentro ogni zona c'è un'altra CollectionType: ranges
-            if ($zoneForm->has('ranges')) {
-                $rangesCollection = $zoneForm->get('ranges');
-
-                foreach ($rangesCollection as $rangeForm) {
-                    $rangeForm->add('package_weight', NumberType::class, [
-                        'suffix' => \Configuration::get('PS_WEIGHT_UNIT'),
-                        'label' => $this->trans('Package weight', [], 'Modules.Packageweight.Main'),
-                        'required' => false,
-                        'default_value' => 1,
-                    ]);
-                }
-            }
-        }
+        $shippingSettings->add('ranges_costs', CollectionType::class, [
+            'prototype_name' => '__zone__',
+            'entry_type' => PackageWeightCostsZoneType::class,
+            'label' => null,
+            'allow_add' => true,
+            'allow_delete' => true,
+        ]);
     }
 
     public function hookActionCarrierFormDataProviderData(array $params) {

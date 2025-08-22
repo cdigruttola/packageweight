@@ -49,3 +49,17 @@ services:
     public: true
     tags:
       - { name: form.type }
+
+  cdigruttola.packageweight.form.package_weight_costs_zone_type:
+    class: 'cdigruttola\Module\PackageWeight\Form\Type\PackageWeightCostsZoneType'
+    parent: 'PrestaShopBundle\Form\Admin\Improve\Shipping\Carrier\Type\CostsZoneType'
+    public: true
+    tags:
+      - { name: form.type }
+
+  cdigruttola.packageweight.form.package_weight_costs_range_type:
+    class: 'cdigruttola\Module\PackageWeight\Form\Type\PackageWeightCostsRangeType'
+    parent: 'PrestaShopBundle\Form\Admin\Improve\Shipping\Carrier\Type\CostsRangeType'
+    public: true
+    tags:
+      - { name: form.type }

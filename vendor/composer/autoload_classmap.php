@@ -15,5 +15,7 @@ return array(
     'cdigruttola\\Module\\PackageWeight\\Form\\DataConfiguration\\PackageWeightConfigurationData' => $baseDir . '/src/Form/DataConfiguration/PackageWeightConfigurationData.php',
     'cdigruttola\\Module\\PackageWeight\\Form\\PackageWeightConfigurationType' => $baseDir . '/src/Form/PackageWeightConfigurationType.php',
     'cdigruttola\\Module\\PackageWeight\\Form\\Provider\\PackageWeightConfigurationFormDataProvider' => $baseDir . '/src/Form/Provider/PackageWeightConfigurationFormDataProvider.php',
+    'cdigruttola\\Module\\PackageWeight\\Form\\Type\\PackageWeightCostsRangeType' => $baseDir . '/src/Form/Type/PackageWeightCostsRangeType.php',
+    'cdigruttola\\Module\\PackageWeight\\Form\\Type\\PackageWeightCostsZoneType' => $baseDir . '/src/Form/Type/PackageWeightCostsZoneType.php',
     'cdigruttola\\Module\\PackageWeight\\Repository\\PackageRangeWeightRepository' => $baseDir . '/src/Repository/PackageRangeWeightRepository.php',
 );

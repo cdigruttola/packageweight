@@ -30,6 +30,8 @@ class ComposerStaticInitb47ca68fa6c4c184172d80824811a5c9
         'cdigruttola\\Module\\PackageWeight\\Form\\DataConfiguration\\PackageWeightConfigurationData' => __DIR__ . '/../..' . '/src/Form/DataConfiguration/PackageWeightConfigurationData.php',
         'cdigruttola\\Module\\PackageWeight\\Form\\PackageWeightConfigurationType' => __DIR__ . '/../..' . '/src/Form/PackageWeightConfigurationType.php',
         'cdigruttola\\Module\\PackageWeight\\Form\\Provider\\PackageWeightConfigurationFormDataProvider' => __DIR__ . '/../..' . '/src/Form/Provider/PackageWeightConfigurationFormDataProvider.php',
+        'cdigruttola\\Module\\PackageWeight\\Form\\Type\\PackageWeightCostsRangeType' => __DIR__ . '/../..' . '/src/Form/Type/PackageWeightCostsRangeType.php',
+        'cdigruttola\\Module\\PackageWeight\\Form\\Type\\PackageWeightCostsZoneType' => __DIR__ . '/../..' . '/src/Form/Type/PackageWeightCostsZoneType.php',
         'cdigruttola\\Module\\PackageWeight\\Repository\\PackageRangeWeightRepository' => __DIR__ . '/../..' . '/src/Repository/PackageRangeWeightRepository.php',
     );
 
