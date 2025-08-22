@@ -15,8 +15,7 @@
       "cdigruttola\\Module\\PackageWeight\\": "src/"
     },
     "classmap": [
-      "packageweight.php",
-      "classes/"
+      "packageweight.php"
     ],
     "exclude-from-classmap": []
   },

@@ -22,14 +22,15 @@ class ComposerStaticInitb47ca68fa6c4c184172d80824811a5c9
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'PackageRangeWeight' => __DIR__ . '/../..' . '/classes/PackageRangeWeight.php',
         'Packageweight' => __DIR__ . '/../..' . '/packageweight.php',
         'cdigruttola\\Module\\PackageWeight\\Adapter\\Kpi\\PackageWeightCartTotalKpi' => __DIR__ . '/../..' . '/src/Adapter/Kpi/PackageWeightCartTotalKpi.php',
         'cdigruttola\\Module\\PackageWeight\\Adapter\\Kpi\\WeightCartTotalKpi' => __DIR__ . '/../..' . '/src/Adapter/Kpi/WeightCartTotalKpi.php',
         'cdigruttola\\Module\\PackageWeight\\Controller\\PackageWeightController' => __DIR__ . '/../..' . '/src/Controller/PackageWeightController.php',
+        'cdigruttola\\Module\\PackageWeight\\Entity\\PackageRangeWeight' => __DIR__ . '/../..' . '/src/Entity/PackageRangeWeight.php',
         'cdigruttola\\Module\\PackageWeight\\Form\\DataConfiguration\\PackageWeightConfigurationData' => __DIR__ . '/../..' . '/src/Form/DataConfiguration/PackageWeightConfigurationData.php',
         'cdigruttola\\Module\\PackageWeight\\Form\\PackageWeightConfigurationType' => __DIR__ . '/../..' . '/src/Form/PackageWeightConfigurationType.php',
         'cdigruttola\\Module\\PackageWeight\\Form\\Provider\\PackageWeightConfigurationFormDataProvider' => __DIR__ . '/../..' . '/src/Form/Provider/PackageWeightConfigurationFormDataProvider.php',
+        'cdigruttola\\Module\\PackageWeight\\Repository\\PackageRangeWeightRepository' => __DIR__ . '/../..' . '/src/Repository/PackageRangeWeightRepository.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

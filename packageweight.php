@@ -27,6 +27,9 @@ use cdigruttola\Module\PackageWeight\Adapter\Kpi\PackageWeightCartTotalKpi;
 use cdigruttola\Module\PackageWeight\Adapter\Kpi\WeightCartTotalKpi;
 use cdigruttola\Module\PackageWeight\Form\DataConfiguration\PackageWeightConfigurationData;
 use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -65,9 +68,12 @@ class Packageweight extends Module
     {
         include dirname(__FILE__) . '/sql/install.php';
 
-        return $this->registerHook('actionCartKpiRowModifier')
+        return parent::install()
+            && $this->registerHook('actionCartKpiRowModifier')
             && $this->registerHook('displayAfterCarrier')
-            && parent::install();
+            && $this->registerHook('actionCarrierFormBuilderModifier')
+            && $this->registerHook('actionCarrierFormDataProviderData')
+            && $this->registerHook('actionAfterUpdateCarrierFormHandler');
     }
 
     public function uninstall()
@@ -120,5 +126,59 @@ class Packageweight extends Module
         ]);
 
         return $this->display(__FILE__, 'views/templates/hook/display-after-carrier.tpl');
+    }
+
+    public function hookActionCarrierFormBuilderModifier(array $params)
+    {
+        if (!$this->active) {
+            return;
+        }
+
+        if ($params['data']['shipping_settings']['shipping_method'] !== Carrier::SHIPPING_METHOD_WEIGHT) {
+            return;
+        }
+
+        // ranges_costs è una CollectionType di CostsZoneType
+        $zonesCollection = $params['form_builder']->get('shipping_settings')->get('ranges_costs');
+
+        foreach ($zonesCollection as $zoneForm) {
+            // dentro ogni zona c'è un'altra CollectionType: ranges
+            if ($zoneForm->has('ranges')) {
+                $rangesCollection = $zoneForm->get('ranges');
+
+                foreach ($rangesCollection as $rangeForm) {
+                    $rangeForm->add('package_weight', NumberType::class, [
+                        'suffix' => \Configuration::get('PS_WEIGHT_UNIT'),
+                        'label' => $this->trans('Package weight', [], 'Modules.Packageweight.Main'),
+                        'required' => false,
+                        'default_value' => 1,
+                    ]);
+                }
+            }
+        }
+    }
+
+    public function hookActionCarrierFormDataProviderData(array $params) {
+        if (!$this->active) {
+            return;
+        }
+
+        $carrierId = (int) $params['id'];
+        $data = $params['data'];
+
+        if (!empty($data['shipping_settings']['ranges_costs'])) {
+            foreach ($data['shipping_settings']['ranges_costs'] as $zone) {
+                if (isset($zone['ranges'])) {
+                    foreach ($zone['ranges'] as $range) {
+                        $rangeId = $range['id'] ?? null;
+                        $packageWeight = $range['package_weight'] ?? null;
+                    }
+                }
+            }
+        }
+    }
+
+    public function hookActionAfterUpdateCarrierFormHandler(array $params) {
+
     }
 }
