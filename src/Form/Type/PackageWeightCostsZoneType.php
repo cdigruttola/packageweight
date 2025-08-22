@@ -63,5 +63,4 @@ class PackageWeightCostsZoneType extends CostsZoneType
             'form_theme' => '@Modules/packageweight/views/templates/admin/costs-range.html.twig',
         ]);
     }
-
 }
