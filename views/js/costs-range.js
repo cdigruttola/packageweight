@@ -22,12 +22,31 @@
  *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  *
  */
-const {$} = window;
+const { $ } = window;
 
 $(() => {
-    prestashop.component.EventEmitter.on('carrierShippingMethodChange', (response) => {
+    prestashop.component.EventEmitter.on("carrierShippingMethodChange", (response) => {
         if (response !== weight_unit) {
-            console.log(response);
+            $(".package_weight").addClass("d-none");
+
+            const $protoDiv = $("#carrier_shipping_settings_ranges_costs");
+            let proto = $protoDiv.attr("data-prototype");
+
+            if (proto && !proto.includes("package_weight d-none")) {
+                proto = proto.replace(/class="package_weight"/g, 'class="package_weight d-none"');
+                $protoDiv.attr("data-prototype", proto);
+            }
+
+        } else {
+            $(".package_weight").removeClass("d-none");
+
+            const $protoDiv = $("#carrier_shipping_settings_ranges_costs");
+            let proto = $protoDiv.attr("data-prototype");
+
+            if (proto && proto.includes("package_weight d-none")) {
+                proto = proto.replace(/class="package_weight d-none"/g, 'class="package_weight"');
+                $protoDiv.attr("data-prototype", proto);
+            }
         }
     });
 });
