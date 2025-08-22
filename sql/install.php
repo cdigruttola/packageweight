@@ -29,9 +29,9 @@ if (!defined('_PS_VERSION_')) {
 $sql = [];
 
 $sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'package_range_weight` (
-    `id_delivery` int(10) NOT NULL,
+    `id_range_weight` int(10) NOT NULL,
     `package_weight` decimal(20, 6),
-    PRIMARY KEY  (`id_delivery`)
+    PRIMARY KEY  (`id_range_weight`)
 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 
 foreach ($sql as $query) {

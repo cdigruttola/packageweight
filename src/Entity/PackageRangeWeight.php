@@ -45,7 +45,7 @@ class PackageRangeWeight
      *
      * @ORM\Id
      *
-     * @ORM\Column(name="id_delivery", type="integer")
+     * @ORM\Column(name="id_range_weight", type="integer")
      *
      */
     private $id;
