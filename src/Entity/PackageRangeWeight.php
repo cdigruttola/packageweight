@@ -71,7 +71,7 @@ class PackageRangeWeight
 
     public function getPackageWeight(): float
     {
-        return $this->packageWeight;
+        return (float) $this->packageWeight;
     }
 
     public function setPackageWeight(float $packageWeight): self
