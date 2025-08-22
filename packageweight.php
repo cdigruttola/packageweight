@@ -8,9 +8,6 @@
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
  * http://opensource.org/licenses/afl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@prestashop.com so we can send you a copy immediately.
  *
  * DISCLAIMER
  *
@@ -49,20 +46,18 @@ class Packageweight extends Module
         $this->version = '2.0.0';
         $this->author = 'cdigruttola';
         $this->need_instance = 0;
-
         $this->bootstrap = true;
 
         parent::__construct();
 
         $this->displayName = $this->trans('Package Weight', [], 'Modules.Packageweight.Main');
         $this->description = $this->trans('This module helps you to set a package weight for each range weight you set in carrier', [], 'Modules.Packageweight.Main');
-
         $this->confirmUninstall = $this->trans('Are you sure you want to uninstall this module?', [], 'Modules.Packageweight.Main');
 
         $this->ps_versions_compliancy = ['min' => '9.0.0', 'max' => _PS_VERSION_];
     }
 
-    public function isUsingNewTranslationSystem()
+    public function isUsingNewTranslationSystem(): bool
     {
         return true;
     }
@@ -99,35 +94,25 @@ class Packageweight extends Module
         $params['kpis'][] = new PackageWeightCartTotalKpi($this);
     }
 
-    /**
-     * Inject some fixed metadata in the template used by all service point-based carriers.
-     *
-     * @param array $params
-     *
-     * @return false|string
-     */
     public function hookDisplayAfterCarrier(array $params)
     {
         $cart = $params['cart'] ?? null;
-        if ($cart === null || !$cart->id_address_delivery || !$cart->id_customer) {
+        if (!$cart || !$cart->id_address_delivery || !$cart->id_customer) {
             return '';
         }
 
         $id_group = Customer::getDefaultGroupId((int) $cart->id_customer);
-        $group_ids = json_decode(Configuration::get(PackageWeightConfigurationData::PACKAGE_WEIGHT_GROUPS), true) ?: [];
+        $allowedGroups = json_decode(Configuration::get(PackageWeightConfigurationData::PACKAGE_WEIGHT_GROUPS), true) ?: [];
 
-        if (!in_array($id_group, $group_ids)) {
+        if (!in_array($id_group, $allowedGroups)) {
             return '';
         }
 
-        $idCarrier = $cart->id_carrier;
-        if (!$idCarrier) {
-            $idCarrier = preg_replace('/[^0-9]/', '', current($cart->getDeliveryOption(null, false, false)));
-        }
+        $idCarrier = $cart->id_carrier ?: preg_replace('/[^0-9]/', '', current($cart->getDeliveryOption(null, false, false)));
 
-        $total_weight = Carrier::addPackingWeight($idCarrier, $cart->getTotalWeight());
+        $totalWeight = Carrier::addPackingWeight($idCarrier, $cart->getTotalWeight());
         $this->smarty->assign([
-            'weight' => sprintf('%.3f %s', $total_weight, Configuration::get('PS_WEIGHT_UNIT')),
+            'weight' => sprintf('%.3f %s', $totalWeight, Configuration::get('PS_WEIGHT_UNIT')),
         ]);
 
         return $this->display(__FILE__, 'views/templates/hook/display-after-carrier.tpl');
@@ -137,23 +122,17 @@ class Packageweight extends Module
     {
         if ($this->active) {
             $this->context->controller->addJS($this->_path . 'views/js/costs-range.js');
-            Media::addJsDef(
-                [
-                    'weight_unit' => Configuration::get('PS_WEIGHT_UNIT'),
-                ]
-            );
+            Media::addJsDef(['weight_unit' => Configuration::get('PS_WEIGHT_UNIT')]);
         }
     }
+
     public function hookActionCarrierFormBuilderModifier(array $params)
     {
         if (!$this->active) {
             return;
         }
 
-        $formBuilder = $params['form_builder'];
-        $shippingSettings = $formBuilder->get('shipping_settings');
-
-        $shippingSettings->add('ranges_costs', CollectionType::class, [
+        $params['form_builder']->get('shipping_settings')->add('ranges_costs', CollectionType::class, [
             'prototype_name' => '__zone__',
             'entry_type' => PackageWeightCostsZoneType::class,
             'label' => null,
@@ -164,236 +143,140 @@ class Packageweight extends Module
 
     public function hookActionCarrierFormDataProviderData(array $params)
     {
-        if (!$this->active) {
+        if (!$this->active || $params['data']['shipping_settings']['shipping_method'] !== Carrier::SHIPPING_METHOD_WEIGHT) {
             return;
         }
 
-        if ($params['data']['shipping_settings']['shipping_method'] !== Carrier::SHIPPING_METHOD_WEIGHT) {
-            return;
-        }
-
-        $carrierId = (int) $params['id'];
-        $data = &$params['data'];
-
-        /** @var Connection $connection */
-        $connection = $this->get('doctrine.dbal.default_connection');
-
-        /** @var PackageRangeWeightRepository $repository */
-        $repository = $this->get('cdigruttola.module.packageweight.repository.package_weight');
-
-        if (!empty($data['shipping_settings']['ranges_costs'])) {
-            $rangesIds = [];
-            foreach ($data['shipping_settings']['ranges_costs'] as &$zone) {
-                if (isset($zone['ranges'])) {
-                    $idZone = $zone['zoneId'];
-                    foreach ($zone['ranges'] as &$range) {
-                        $rangeKey = $range['range'];
-                        // Check if range already exist in database
-                        if (!in_array($rangeKey, array_keys($rangesIds), true)) {
-                            $qb = $connection->createQueryBuilder();
-                            $qb
-                                ->select('rw.id_range_weight')
-                                ->from(_DB_PREFIX_ . 'range_weight', 'rw')
-                                ->andWhere('rw.id_carrier = :carrierId')
-                                ->andWhere('rw.delimiter1 = :delimiter1')
-                                ->andWhere('rw.delimiter2 = :delimiter2')
-                                ->setParameter('carrierId', $carrierId)
-                                ->setParameter('delimiter1', $range['from'])
-                                ->setParameter('delimiter2', $range['to']);
-
-                            $rangeId = $qb->executeQuery()->fetchOne();
-                            $rangesIds[$rangeKey] = $rangeId;
-                        } else {
-                            $rangeId = $rangesIds[$rangeKey];
-                        }
-
-                        $qb = $connection->createQueryBuilder();
-                        $qb
-                            ->select('d.id_delivery')
-                            ->from(_DB_PREFIX_ . 'delivery', 'd')
-                            ->andWhere('d.id_carrier = :carrierId')
-                            ->andWhere('d.id_zone = :idZone')
-                            ->andWhere('d.id_range_weight = :rangeId')
-                            ->setParameter('carrierId', $carrierId)
-                            ->setParameter('idZone', $idZone)
-                            ->setParameter('rangeId', $rangeId);
-
-                        $deliveryId = $qb->executeQuery()->fetchOne();
-
-                        /** @var PackageRangeWeight|null $entity */
-                        $entity = $repository->find($deliveryId);
-                        if (null === $entity) {
-                            continue;
-                        }
-                        $range['package_weight'] = $entity->getPackageWeight();
-                    }
-                }
-            }
-        }
+        $this->hydratePackageWeights((int) $params['id'], $params['data']);
     }
 
     public function hookActionAfterCreateCarrierFormHandler(array $params)
     {
-        if (!$this->active) {
+        if ($this->isCarrierWeightMethodInactive($params)) {
             return;
         }
 
-        if ($params['form_data']['shipping_settings']['shipping_method'] !== Carrier::SHIPPING_METHOD_WEIGHT) {
+        $this->persistPackageWeights((int) $params['id'], $params['form_data']);
+    }
+
+    public function hookActionAfterUpdateCarrierFormHandler(array $params)
+    {
+        if ($this->isCarrierWeightMethodInactive($params)) {
             return;
         }
 
         $carrierId = (int) $params['id'];
-        $data = $params['form_data'];
+        $this->persistPackageWeights($carrierId, $params['form_data']);
+        $this->cleanupObsoleteWeights($carrierId);
+    }
+
+    private function isCarrierWeightMethodInactive(array $params): bool
+    {
+        return !$this->active || $params['form_data']['shipping_settings']['shipping_method'] !== Carrier::SHIPPING_METHOD_WEIGHT;
+    }
+
+    private function hydratePackageWeights(int $carrierId, array &$data): void
+    {
+        if (empty($data['shipping_settings']['ranges_costs'])) {
+            return;
+        }
 
         /** @var Connection $connection */
         $connection = $this->get('doctrine.dbal.default_connection');
-
         /** @var PackageRangeWeightRepository $repository */
         $repository = $this->get('cdigruttola.module.packageweight.repository.package_weight');
 
-        /** @var EntityManagerInterface */
-        $entityManager = $this->get('doctrine.orm.default_entity_manager');
+        $rangesIds = [];
+        foreach ($data['shipping_settings']['ranges_costs'] as &$zone) {
+            if (!isset($zone['ranges'])) {
+                continue;
+            }
 
-        if (!empty($data['shipping_settings']['ranges_costs'])) {
-            $rangesIds = [];
-            foreach ($data['shipping_settings']['ranges_costs'] as $zone) {
-                if (isset($zone['ranges'])) {
-                    $idZone = $zone['zoneId'];
-                    foreach ($zone['ranges'] as &$range) {
-                        $rangeKey = $range['range'];
-                        // Check if range already exist in database
-                        if (!in_array($rangeKey, array_keys($rangesIds), true)) {
-                            $qb = $connection->createQueryBuilder();
-                            $qb
-                                ->select('rw.id_range_weight')
-                                ->from(_DB_PREFIX_ . 'range_weight', 'rw')
-                                ->andWhere('rw.id_carrier = :carrierId')
-                                ->andWhere('rw.delimiter1 = :delimiter1')
-                                ->andWhere('rw.delimiter2 = :delimiter2')
-                                ->setParameter('carrierId', $carrierId)
-                                ->setParameter('delimiter1', $range['from'])
-                                ->setParameter('delimiter2', $range['to']);
+            foreach ($zone['ranges'] as &$range) {
+                $rangeId = $this->getRangeId($connection, $carrierId, $range, $rangesIds);
+                $deliveryId = $this->getDeliveryId($connection, $carrierId, $zone['zoneId'], $rangeId);
 
-                            $rangeId = $qb->executeQuery()->fetchOne();
-                            $rangesIds[$rangeKey] = $rangeId;
-                        } else {
-                            $rangeId = $rangesIds[$rangeKey];
-                        }
-
-                        $qb = $connection->createQueryBuilder();
-                        $qb
-                            ->select('d.id_delivery')
-                            ->from(_DB_PREFIX_ . 'delivery', 'd')
-                            ->andWhere('d.id_carrier = :carrierId')
-                            ->andWhere('d.id_zone = :idZone')
-                            ->andWhere('d.id_range_weight = :rangeId')
-                            ->setParameter('carrierId', $carrierId)
-                            ->setParameter('idZone', $idZone)
-                            ->setParameter('rangeId', $rangeId);
-
-                        $deliveryId = $qb->executeQuery()->fetchOne();
-
-                        /** @var PackageRangeWeight|null $entity */
-                        $entity = $repository->find($deliveryId);
-                        if (null === $entity) {
-                            $entity = new PackageRangeWeight();
-                        }
-
-                        $entity->setId($deliveryId);
-                        $entity->setPackageWeight($range['package_weight']);
-
-                        $entityManager->persist($entity);
-                        $entityManager->flush();
-                    }
+                if ($entity = $repository->find($deliveryId)) {
+                    $range['package_weight'] = $entity->getPackageWeight();
                 }
             }
         }
     }
 
-    public function hookActionAfterUpdateCarrierFormHandler(array $params)
+    private function persistPackageWeights(int $carrierId, array $data): void
     {
-        if (!$this->active) {
+        if (empty($data['shipping_settings']['ranges_costs'])) {
             return;
         }
 
-        if ($params['form_data']['shipping_settings']['shipping_method'] !== Carrier::SHIPPING_METHOD_WEIGHT) {
-            return;
-        }
-
-        $carrierId = (int) $params['id'];
-        $data = $params['form_data'];
-
-        /** @var Connection $connection */
         $connection = $this->get('doctrine.dbal.default_connection');
-
         /** @var PackageRangeWeightRepository $repository */
         $repository = $this->get('cdigruttola.module.packageweight.repository.package_weight');
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $this->get('doctrine.orm.entity_manager');
 
-        /** @var EntityManagerInterface */
-        $entityManager = $this->get('doctrine.orm.default_entity_manager');
+        $rangesIds = [];
+        foreach ($data['shipping_settings']['ranges_costs'] as $zone) {
+            if (!isset($zone['ranges'])) {
+                continue;
+            }
 
-        if (!empty($data['shipping_settings']['ranges_costs'])) {
-            $rangesIds = [];
-            foreach ($data['shipping_settings']['ranges_costs'] as $zone) {
-                if (isset($zone['ranges'])) {
-                    $idZone = $zone['zoneId'];
-                    foreach ($zone['ranges'] as &$range) {
-                        $rangeKey = $range['range'];
-                        // Check if range already exist in database
-                        if (!in_array($rangeKey, array_keys($rangesIds), true)) {
-                            $qb = $connection->createQueryBuilder();
-                            $qb
-                                ->select('rw.id_range_weight')
-                                ->from(_DB_PREFIX_ . 'range_weight', 'rw')
-                                ->andWhere('rw.id_carrier = :carrierId')
-                                ->andWhere('rw.delimiter1 = :delimiter1')
-                                ->andWhere('rw.delimiter2 = :delimiter2')
-                                ->setParameter('carrierId', $carrierId)
-                                ->setParameter('delimiter1', $range['from'])
-                                ->setParameter('delimiter2', $range['to']);
+            foreach ($zone['ranges'] as $range) {
+                $rangeId = $this->getRangeId($connection, $carrierId, $range, $rangesIds);
+                $deliveryId = $this->getDeliveryId($connection, $carrierId, $zone['zoneId'], $rangeId);
 
-                            $rangeId = $qb->executeQuery()->fetchOne();
-                            $rangesIds[$rangeKey] = $rangeId;
-                        } else {
-                            $rangeId = $rangesIds[$rangeKey];
-                        }
+                $entity = $repository->find($deliveryId) ?? new PackageRangeWeight();
+                $entity->setId($deliveryId);
+                $entity->setPackageWeight($range['package_weight']);
 
-                        $qb = $connection->createQueryBuilder();
-                        $qb
-                            ->select('d.id_delivery')
-                            ->from(_DB_PREFIX_ . 'delivery', 'd')
-                            ->andWhere('d.id_carrier = :carrierId')
-                            ->andWhere('d.id_zone = :idZone')
-                            ->andWhere('d.id_range_weight = :rangeId')
-                            ->setParameter('carrierId', $carrierId)
-                            ->setParameter('idZone', $idZone)
-                            ->setParameter('rangeId', $rangeId);
-
-                        $deliveryId = $qb->executeQuery()->fetchOne();
-
-                        /** @var PackageRangeWeight|null $entity */
-                        $entity = $repository->find($deliveryId);
-                        if (null === $entity) {
-                            $entity = new PackageRangeWeight();
-                        }
-
-                        $entity->setId($deliveryId);
-                        $entity->setPackageWeight($range['package_weight']);
-
-                        $entityManager->persist($entity);
-                        $entityManager->flush();
-                    }
-                }
+                $entityManager->persist($entity);
+                $entityManager->flush();
             }
         }
+    }
 
-        $qb = $connection->createQueryBuilder();
-        $qb->delete(_DB_PREFIX_ . 'package_range_weight')
-            ->andWhere(
-                'id_delivery NOT IN
-                    (SELECT id_delivery FROM ' . _DB_PREFIX_ . 'delivery WHERE id_carrier = :carrierId)'
-            )
+    private function cleanupObsoleteWeights(int $carrierId): void
+    {
+        $connection = $this->get('doctrine.dbal.default_connection');
+        $connection->createQueryBuilder()
+            ->delete(_DB_PREFIX_ . 'package_range_weight')
+            ->andWhere('id_delivery NOT IN (SELECT id_delivery FROM ' . _DB_PREFIX_ . 'delivery WHERE id_carrier = :carrierId)')
             ->setParameter('carrierId', $carrierId)
             ->executeQuery();
+    }
+
+    private function getRangeId(Connection $connection, int $carrierId, array $range, array &$rangesIds): int
+    {
+        $rangeKey = $range['range'];
+        if (!isset($rangesIds[$rangeKey])) {
+            $rangesIds[$rangeKey] = $connection->createQueryBuilder()
+                ->select('rw.id_range_weight')
+                ->from(_DB_PREFIX_ . 'range_weight', 'rw')
+                ->andWhere('rw.id_carrier = :carrierId')
+                ->andWhere('rw.delimiter1 = :from')
+                ->andWhere('rw.delimiter2 = :to')
+                ->setParameter('carrierId', $carrierId)
+                ->setParameter('from', $range['from'])
+                ->setParameter('to', $range['to'])
+                ->executeQuery()
+                ->fetchOne();
+        }
+
+        return (int) $rangesIds[$rangeKey];
+    }
+
+    private function getDeliveryId(Connection $connection, int $carrierId, int $zoneId, int $rangeId): int
+    {
+        return (int) $connection->createQueryBuilder()
+            ->select('d.id_delivery')
+            ->from(_DB_PREFIX_ . 'delivery', 'd')
+            ->andWhere('d.id_carrier = :carrierId')
+            ->andWhere('d.id_zone = :zoneId')
+            ->andWhere('d.id_range_weight = :rangeId')
+            ->setParameter('carrierId', $carrierId)
+            ->setParameter('zoneId', $zoneId)
+            ->setParameter('rangeId', $rangeId)
+            ->executeQuery()
+            ->fetchOne();
     }
 }
