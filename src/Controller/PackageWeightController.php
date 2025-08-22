@@ -54,7 +54,9 @@ class PackageWeightController extends PrestaShopAdminController
     /**
      * @param Request $request
      * @param Handler $configurationFormHandler
+     *
      * @return Response
+     *
      * @throws \Exception
      */
     public function saveConfiguration(

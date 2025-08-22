@@ -136,7 +136,7 @@ class Packageweight extends Module
             return;
         }
 
-        if ($params['data']['shipping_settings']['shipping_method'] !== \Carrier::SHIPPING_METHOD_WEIGHT) {
+        if ($params['data']['shipping_settings']['shipping_method'] !== Carrier::SHIPPING_METHOD_WEIGHT) {
             return;
         }
 
@@ -152,7 +152,8 @@ class Packageweight extends Module
         ]);
     }
 
-    public function hookActionCarrierFormDataProviderData(array $params) {
+    public function hookActionCarrierFormDataProviderData(array $params)
+    {
         if (!$this->active) {
             return;
         }
@@ -207,7 +208,7 @@ class Packageweight extends Module
         }
     }
 
-    public function hookActionAfterUpdateCarrierFormHandler(array $params) {
-
+    public function hookActionAfterUpdateCarrierFormHandler(array $params)
+    {
     }
 }

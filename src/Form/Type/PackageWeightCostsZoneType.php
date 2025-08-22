@@ -27,10 +27,8 @@ declare(strict_types=1);
 
 namespace cdigruttola\Module\PackageWeight\Form\Type;
 
-use PrestaShopBundle\Form\Admin\Improve\Shipping\Carrier\Type\CostsRangeType;
 use PrestaShopBundle\Form\Admin\Improve\Shipping\Carrier\Type\CostsZoneType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 if (!defined('_PS_VERSION_')) {
@@ -44,13 +42,13 @@ class PackageWeightCostsZoneType extends CostsZoneType
         parent::buildForm($builder, $options);
 
         $builder->add('ranges', CollectionType::class, [
-        'prototype_name' => '__range__',
-        'entry_type' => PackageWeightCostsRangeType::class,
-        'label' => false,
-        'required' => false,
-        'allow_add' => true,
-        'allow_delete' => true,
-        'block_prefix' => 'carrier_ranges_costs_zone_ranges_collection',
-    ]);
+            'prototype_name' => '__range__',
+            'entry_type' => PackageWeightCostsRangeType::class,
+            'label' => false,
+            'required' => false,
+            'allow_add' => true,
+            'allow_delete' => true,
+            'block_prefix' => 'carrier_ranges_costs_zone_ranges_collection',
+        ]);
     }
 }

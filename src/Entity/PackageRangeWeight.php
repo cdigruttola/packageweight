@@ -46,7 +46,6 @@ class PackageRangeWeight
      * @ORM\Id
      *
      * @ORM\Column(name="id_range_weight", type="integer")
-     *
      */
     private $id;
 
@@ -80,5 +79,4 @@ class PackageRangeWeight
 
         return $this;
     }
-
 }

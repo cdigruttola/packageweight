@@ -34,7 +34,6 @@ if (!defined('_PS_VERSION_')) {
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\QueryBuilder;
 
 class PackageRangeWeightRepository extends EntityRepository
 {
