@@ -27,17 +27,11 @@ use cdigruttola\Module\PackageWeight\Adapter\Kpi\PackageWeightCartTotalKpi;
 use cdigruttola\Module\PackageWeight\Adapter\Kpi\WeightCartTotalKpi;
 use cdigruttola\Module\PackageWeight\Entity\PackageRangeWeight;
 use cdigruttola\Module\PackageWeight\Form\DataConfiguration\PackageWeightConfigurationData;
-use cdigruttola\Module\PackageWeight\Form\Type\PackageWeightCostsRangeType;
 use cdigruttola\Module\PackageWeight\Form\Type\PackageWeightCostsZoneType;
 use cdigruttola\Module\PackageWeight\Repository\PackageRangeWeightRepository;
 use Doctrine\DBAL\Connection;
 use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
-use PrestaShopBundle\Form\Admin\Improve\Shipping\Carrier\Type\CostsZoneType;
-use Psr\Log\LogLevel;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormBuilderInterface;
 
 if (!defined('_PS_VERSION_')) {
     exit;

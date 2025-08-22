@@ -43,9 +43,9 @@ class PackageWeightCostsRangeType extends CostsRangeType
         parent::buildForm($builder, $options);
 
         $builder->add('package_weight', NumberType::class, [
-            'label'       => 'Package weight',
+            'label'       => $this->trans('Package weight', 'Modules.Packageweight.Main'),
             'required'    => false,
-            'empty_data'  => 0,
+            'default_empty_data'  => 0,
             'unit'        => \Configuration::get('PS_WEIGHT_UNIT'),
         ]);
     }
